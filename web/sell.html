@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lead Leak Audit · $47 · Garcar Enterprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090e;--surf:#0e1118;--surf2:#141824;--txt:#edf2ff;--muted:#8490ab;--c1:#63d4ff;--c2:#8b7fff;--grad:linear-gradient(135deg,#63d4ff,#8b7fff);--bd:rgba(100,130,200,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--txt);min-height:100dvh;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:2.4rem 1.2rem 4rem}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:2.4rem}
+.nav a{color:var(--muted);text-decoration:none;font-size:.9rem}
+h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.2rem,6vw,3.6rem);letter-spacing:-.03em;line-height:1.05;margin:.4rem 0 1rem}
+h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.price{display:inline-flex;align-items:baseline;gap:.5rem;background:rgba(99,212,255,.1);border:1px solid rgba(99,212,255,.25);padding:.35rem .8rem;border-radius:999px;color:var(--c1);font-weight:700;margin-bottom:1.2rem}
+.lede{color:var(--muted);font-size:1.08rem;max-width:52ch;margin-bottom:1.6rem}
+.grid{display:grid;gap:.8rem;margin:1.6rem 0 2rem}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:1rem;padding:1rem 1.1rem}
+.card strong{display:block;margin-bottom:.2rem}
+.card span{color:var(--muted);font-size:.9rem}
+form{background:var(--surf);border:1px solid var(--bd);border-radius:1.2rem;padding:1.2rem;display:grid;gap:.7rem}
+label{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+input,select,textarea{width:100%;background:var(--surf2);border:1px solid var(--bd);color:var(--txt);border-radius:.7rem;padding:.75rem .85rem;font:inherit}
+button,.buy{background:var(--grad);color:#fff;border:none;border-radius:.9rem;padding:.95rem 1.1rem;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;display:block}
+.note{font-size:.82rem;color:var(--muted);margin-top:.6rem}
+.ok{color:#8dffc0;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="index.html">← SovereignChat</a>
+    <a href="https://garrettc123.github.io/" target="_blank" rel="noopener">Storefront</a>
+  </div>
+  <div class="price">$47 · delivered to email</div>
+  <h1>The 48-hour map of where the <em>job dies</em>.</h1>
+  <p class="lede">Texas HVAC, roofing, and plumbing shops do not have a lead problem. They have a first-response gap. This audit names the leak, the hour it happens, and the one move that closes it.</p>
+  <div class="grid">
+    <div class="card"><strong>What they get</strong><span>A written map of intake → first touch → quote → no-show. Named gaps. One recommended fix.</span></div>
+    <div class="card"><strong>Who it is for</strong><span>Owners in DFW / Texas trades who already pay for leads and cannot say where they evaporate.</span></div>
+    <div class="card"><strong>Guarantee</strong><span>If the map is wrong they say so. No theater. Checkout is live.</span></div>
+  </div>
+  <a class="buy" href="https://buy.stripe.com/dRm8wPbb72pY2Mz8BR43S1D" target="_blank" rel="noopener">Pay $47 now →</a>
+  <p class="note">Or capture the shop first. Leads write to the local server ledger when you run <code>python3 run.py</code>.</p>
+  <form id="lead" style="margin-top:1.4rem">
+    <label>Shop / name</label>
+    <input name="name" placeholder="Johnson County HVAC" required>
+    <label>Email</label>
+    <input name="email" type="email" placeholder="owner@shop.com" required>
+    <label>Trade</label>
+    <select name="trade"><option>HVAC</option><option>Roofing</option><option>Plumbing</option><option>Other</option></select>
+    <label>Where leads die</label>
+    <textarea name="note" rows="3" placeholder="After-hours calls, no quote follow-up…"></textarea>
+    <button type="submit">Save lead + open checkout</button>
+    <div class="ok" id="msg"></div>
+  </form>
+</div>
+<script>
+document.getElementById('lead').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const payload = Object.fromEntries(fd.entries());
+  const msg = document.getElementById('msg');
+  try{
+    const r = await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const d = await r.json();
+    if(!r.ok){ msg.textContent = d.error || 'Need a valid email.'; return; }
+    msg.textContent = 'Lead saved. Opening checkout.';
+    window.open(d.checkout,'_blank');
+  }catch(err){
+    msg.textContent = 'Server offline — opening live checkout directly.';
+    window.open('https://buy.stripe.com/dRm8wPbb72pY2Mz8BR43S1D','_blank');
+  }
+});
+</script>
+</body>
+</html>
