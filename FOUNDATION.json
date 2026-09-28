@@ -1,0 +1,7 @@
+{
+  "system": "sovereign-chat",
+  "tier": "CASH",
+  "stamp": "sidecar",
+  "reason": "HTML offer UI already present",
+  "stamped_by": "garcar-repo-foundry"
+}
