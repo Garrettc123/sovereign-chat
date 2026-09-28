@@ -1,0 +1,2 @@
+# Zero required third-party packages.
+# Python 3.10+ stdlib only (http.server + dataclasses).

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+data/*.json
+data/*.jsonl
+.DS_Store
+.vercel
+.netlify
